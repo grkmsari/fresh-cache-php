@@ -9,6 +9,7 @@ $parser->fetchSitemap($sitemapUrl);
 
 $urls = $parser->getUrls();
 $sitemaps = $parser->getSitemaps();
+$failedSitemaps = $parser->getFailedSitemaps();
 
 $totalUrls = count($urls);
 
@@ -24,4 +25,11 @@ if ($totalUrls > 0) {
     }
 } else {
     echo "No URLs found in the sitemap.\n";
+}
+
+if (!empty($failedSitemaps)) {
+    echo "\nFailed to fetch or parse the following sitemaps:\n";
+    foreach ($failedSitemaps as $failedSitemap) {
+        echo $failedSitemap . "\n";
+    }
 }
