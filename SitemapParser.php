@@ -5,9 +5,11 @@ class SitemapParser {
     private $sitemaps = [];
     private $failedSitemaps = [];
     private $crawlDelay;
+    private $logFile;
 
-    public function __construct($crawlDelay = 1) {
+    public function __construct($crawlDelay = 1, $logFile = null) {
         $this->crawlDelay = $crawlDelay;
+        $this->logFile = $logFile;
     }
 
     // Fetch the sitemap and extract URLs
@@ -61,14 +63,30 @@ class SitemapParser {
         return $this->failedSitemaps;
     }
 
-    // Crawl the URLs and return the status
+    // Crawl the URLs and return the status counts
     public function crawlUrls() {
-        $status = [];
+        $successCount = 0;
+        $failureCount = 0;
+        $failedUrls = [];
+
         foreach ($this->urls as $url) {
             $response = @file_get_contents($url);
-            $status[$url] = $response !== false ? 'Success' : 'Failed';
+            if ($response !== false) {
+                $successCount++;
+            } else {
+                $failureCount++;
+                $failedUrls[] = $url;
+            }
             sleep($this->crawlDelay); // Wait for the specified delay
         }
-        return $status;
+
+        if ($this->logFile && !empty($failedUrls)) {
+            file_put_contents($this->logFile, implode("\n", $failedUrls) . "\n", FILE_APPEND);
+        }
+
+        return [
+            'success' => $successCount,
+            'failure' => $failureCount,
+        ];
     }
 }
