@@ -4,6 +4,11 @@ class SitemapParser {
     private $urls = [];
     private $sitemaps = [];
     private $failedSitemaps = [];
+    private $crawlDelay;
+
+    public function __construct($crawlDelay = 1) {
+        $this->crawlDelay = $crawlDelay;
+    }
 
     // Fetch the sitemap and extract URLs
     public function fetchSitemap($sitemapUrl) {
@@ -37,6 +42,7 @@ class SitemapParser {
 
         foreach ($xml->sitemap as $sitemapElement) {
             $this->fetchSitemap((string) $sitemapElement->loc);
+            sleep($this->crawlDelay); // Wait for the specified delay
         }
     }
 

@@ -4,7 +4,8 @@ $config = include('config.php');
 include('SitemapParser.php');
 
 $sitemapUrl = $config['sitemap_url'];
-$parser = new SitemapParser();
+$crawlDelay = $config['crawl_delay'];
+$parser = new SitemapParser($crawlDelay);
 $parser->fetchSitemap($sitemapUrl);
 
 $urls = $parser->getUrls();
