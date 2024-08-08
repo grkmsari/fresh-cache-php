@@ -60,4 +60,15 @@ class SitemapParser {
     public function getFailedSitemaps() {
         return $this->failedSitemaps;
     }
+
+    // Crawl the URLs and return the status
+    public function crawlUrls() {
+        $status = [];
+        foreach ($this->urls as $url) {
+            $response = @file_get_contents($url);
+            $status[$url] = $response !== false ? 'Success' : 'Failed';
+            sleep($this->crawlDelay); // Wait for the specified delay
+        }
+        return $status;
+    }
 }
