@@ -9,7 +9,8 @@ $isCountOnly = false;
 
 // CLI mode
 if ($isCLI) {
-    $isCountOnly = in_array('--count', $argv);
+    // Check for CLI arguments
+    $isCountOnly = in_array('--count', $argv) || in_array('-c', $argv);
 } else {
     // Web mode (check for GET parameter)
     $isCountOnly = isset($_GET['count']) && $_GET['count'] === '1';
