@@ -4,6 +4,7 @@ class SitemapParser {
     private $urls = [];
     private $sitemaps = [];
     private $failedSitemaps = [];
+    private $visitedSitemaps = [];
     private $crawlDelay;
     private $logFile;
 
@@ -14,6 +15,11 @@ class SitemapParser {
 
     // Fetch the sitemap and extract URLs
     public function fetchSitemap($sitemapUrl) {
+        if (isset($this->visitedSitemaps[$sitemapUrl])) {
+            return;
+        }
+        $this->visitedSitemaps[$sitemapUrl] = true;
+
         $sitemapContent = @file_get_contents($sitemapUrl); // suppress warnings
         if ($sitemapContent === false) {
             echo "Failed to fetch the sitemap: $sitemapUrl\n";
