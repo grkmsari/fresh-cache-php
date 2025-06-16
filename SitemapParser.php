@@ -12,7 +12,8 @@ class SitemapParser {
         $this->logFile = $logFile;
     }
 
-    // Fetch the sitemap and extract URLs
+    // Fetch a sitemap and delegate URL extraction
+    // (and recursive sitemap handling) to parseSitemap
     public function fetchSitemap($sitemapUrl) {
         $sitemapContent = @file_get_contents($sitemapUrl); // suppress warnings
         if ($sitemapContent === false) {
