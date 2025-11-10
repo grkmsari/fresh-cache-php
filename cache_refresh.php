@@ -24,6 +24,8 @@ $crawlDelay = $config['crawl_delay'];
 $logFile = $config['log_file'];
 $outputFile = $config['output_file'];
 
+echo "Sitemap URL: $sitemapUrl\n";
+
 $parser = new SitemapParser($crawlDelay, $logFile);
 $parser->fetchSitemap($sitemapUrl);
 
